@@ -1,0 +1,27 @@
+machine:
+  python:
+    version: 2.7
+  services:
+    - docker
+  environment:
+    PG_HOST: localhost
+    POSTGRES_USER: ubuntu
+    POSTGRES_DB: circle_test
+    POSTGRES_PASSWORD: ""
+  pre:
+    - psql --version
+    - sudo -u ubuntu psql -h localhost -p 5432 -c "create user tf with password 'ubuntu';"
+    - sudo -u ubuntu psql -h localhost -p 5432 -c "alter user tf with superuser;"
+dependencies:
+  cache_directories:
+    - "~/.docker"
+
+  override:
+    - mkdir -p ~/.docker
+    - docker --version
+    - docker info
+
+test:
+  override:
+    - echo test
+
